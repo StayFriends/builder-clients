@@ -18,10 +18,12 @@ ENV KUBECTL_VERSION 1.5.2
 ENV EXPOSECONTROLLER_VERSION 2.3.26
 ENV GOFABRIC8_VERSION 0.4.163
 ENV HUB_VERSION 2.2.3
+ENV HELM_VERSION 2.5.1
 
-RUN curl --retry 999 --retry-max-time 0  -sSL https://bintray.com/artifact/download/fabric8io/helm-ci/helm-v0.1.0%2B825f5ef-linux-amd64.zip > helm.zip && \
-  unzip helm.zip && \
-  mv helm /usr/bin/
+RUN curl --retry 999 --retry-max-time 0  -sSL https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-linux-amd64.tar.gz > helm.tar.gz && \
+  tar xzf helm.tar.gz && \
+  mv linux-amd64/helm /usr/bin/
+
 RUN curl --retry 999 --retry-max-time 0  -sSL https://github.com/openshift/origin/releases/download/v1.5.0/openshift-origin-client-tools-v1.5.0-031cbe4-linux-64bit.tar.gz | tar xzv && \
   mv openshift-origin-*/* /usr/bin/
 
