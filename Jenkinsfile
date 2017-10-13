@@ -13,6 +13,7 @@ podTemplate(label: label, serviceAccount: 'jenkins', containers: [
     [name: 'jnlp', image: 'iocanel/jenkins-jnlp-client:latest', command:'/usr/local/bin/start.sh', args: '${computer.jnlpmac} ${computer.name}', ttyEnabled: false,
             envVars: [[key: 'DOCKER_HOST', value: 'unix:/var/run/docker.sock']]]],
     volumes: [
+            [$class: 'PersistentVolumeClaim', mountPath: '/home/jenkins/workspace', claimName: 'jenkins-workspace'],
             [$class: 'SecretVolume', mountPath: '/home/jenkins/.docker', secretName: 'jenkins-docker-cfg'],
             [$class: 'SecretVolume', mountPath: '/root/.ssh', secretName: 'jenkins-ssh-config'],
             [$class: 'HostPathVolume', mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock']
@@ -20,6 +21,7 @@ podTemplate(label: label, serviceAccount: 'jenkins', containers: [
 
   node(label) {
     stage 'Build image'
+    checkout scm
     def newVersion = performCanaryRelease {
       version = canaryVersion
     }
