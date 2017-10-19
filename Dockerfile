@@ -54,4 +54,9 @@ RUN curl -L https://github.com/fabric8io/exposecontroller/releases/download/v$EX
   chmod +x exposecontroller && \
   mv exposecontroller /usr/bin/
 
+RUN yum install -y epel-release && \
+  yum install -y python-pip && \
+  pip install awscli
+
+
 CMD sleep infinity
